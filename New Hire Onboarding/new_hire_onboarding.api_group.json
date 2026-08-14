@@ -1,0 +1,9 @@
+{
+  "description": null,
+  "handle": "new-hire-onboarding-v1",
+  "name": "New Hire Onboarding",
+  "soap": false,
+  "soap_config": null,
+  "use_prefix": true,
+  "version": "1.0"
+}

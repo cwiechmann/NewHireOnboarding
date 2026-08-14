@@ -1,0 +1,17 @@
+{
+  "api_group_id": {
+    "folder": "",
+    "name": "New Hire Onboarding",
+    "zip_name": "new_hire_onboarding.api_group.json"
+  },
+  "legacy": false,
+  "method": "POST",
+  "name": "onboard_new_hire",
+  "path": "onboard_new_hire",
+  "recipe_id": {
+    "folder": "",
+    "name": "Onboard New Hire",
+    "zip_name": "onboard_new_hire.recipe.json"
+  },
+  "validate_request": false
+}
