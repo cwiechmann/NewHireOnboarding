@@ -1,7 +1,7 @@
 {
-  "description": null,
+  "description": "Onboarding and offboarding APIs for employees",
   "handle": "new-hire-onboarding-v1",
-  "name": "New Hire Onboarding",
+  "name": "Employee Lifecycle",
   "soap": false,
   "soap_config": null,
   "use_prefix": true,

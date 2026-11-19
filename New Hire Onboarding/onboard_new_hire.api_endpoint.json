@@ -1,8 +1,8 @@
 {
   "api_group_id": {
     "folder": "",
-    "name": "New Hire Onboarding",
-    "zip_name": "new_hire_onboarding.api_group.json"
+    "name": "Employee Lifecycle",
+    "zip_name": "employee_lifecycle.api_group.json"
   },
   "legacy": false,
   "method": "POST",

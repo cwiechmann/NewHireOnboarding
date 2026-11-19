@@ -1,0 +1,1001 @@
+{
+  "code": {
+    "as": "api_trigger",
+    "block": [
+      {
+        "block": [
+          {
+            "as": "search_user",
+            "dynamicPickListSelection": {
+              "sobject_name": "User"
+            },
+            "extended_input_schema": [
+              {
+                "control_type": "text",
+                "label": "Email",
+                "name": "Email",
+                "type": "string"
+              }
+            ],
+            "extended_output_schema": [
+              {
+                "label": "User",
+                "name": "User",
+                "of": "object",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Id",
+                    "name": "Id",
+                    "type": "string"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Name",
+                    "name": "Name",
+                    "type": "string"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Email",
+                    "name": "Email",
+                    "type": "string"
+                  }
+                ],
+                "type": "array"
+              }
+            ],
+            "input": {
+              "Email": "#{_dp('{\"pill_type\": \"output\", \"provider\": \"workato_api_platform\", \"line\": \"api_trigger\", \"path\": [\"request\", \"email\"]}')}",
+              "limit": "1",
+              "sobject_name": "User"
+            },
+            "keyword": "action",
+            "name": "search_sobjects",
+            "number": 2,
+            "provider": "salesforce",
+            "uuid": "search-user-001"
+          },
+          {
+            "as": "check_user_found",
+            "block": [
+              {
+                "as": "declare_channel_id",
+                "extended_input_schema": [
+                  {
+                    "add_field_label": "Add a variable",
+                    "control_type": "form-schema-builder",
+                    "empty_schema_title": "Add variables by giving them a name, type and default value",
+                    "exclude_fields": [
+                      "hint"
+                    ],
+                    "item_label": "variable",
+                    "label": "Variables",
+                    "mark_as_required": true,
+                    "name": "variables",
+                    "ngIf": "!input.name",
+                    "optional": true,
+                    "properties": [
+                      {
+                        "broadcast_change_event": true,
+                        "control_type": "text",
+                        "extends_schema": true,
+                        "label": "Schema",
+                        "name": "schema",
+                        "type": "string"
+                      },
+                      {
+                        "label": "Data",
+                        "name": "data",
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "details": {
+                              "real_name": "channel_id"
+                            },
+                            "hint": "Defaults to nil if not supplied.",
+                            "label": "channel_id",
+                            "name": "channel_id",
+                            "optional": true,
+                            "parent": [
+                              "variables",
+                              "data"
+                            ],
+                            "sticky": true,
+                            "type": "string"
+                          }
+                        ],
+                        "type": "object"
+                      }
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "extended_output_schema": [
+                  {
+                    "control_type": "text",
+                    "details": {
+                      "real_name": "channel_id"
+                    },
+                    "label": "channel_id",
+                    "name": "channel_id",
+                    "optional": true,
+                    "type": "string"
+                  }
+                ],
+                "input": {
+                  "variables": {
+                    "data": {
+                      "channel_id": ""
+                    },
+                    "schema": "[{\"name\": \"channel_id\", \"type\": \"string\", \"optional\": true, \"label\": \"channel_id\", \"details\": {\"real_name\": \"channel_id\"}, \"control_type\": \"text\", \"parent\": [\"variables\", \"data\"]}]"
+                  }
+                },
+                "keyword": "action",
+                "name": "declare_variable",
+                "number": 4,
+                "provider": "workato_variable",
+                "uuid": "declare-channel-id-001",
+                "visible_config_fields": [
+                  "variables.data.channel_id"
+                ]
+              },
+              {
+                "as": "list_channels",
+                "extended_input_schema": [
+                  {
+                    "control_type": "text",
+                    "label": "Mnemonic",
+                    "name": "mnemonic",
+                    "type": "string"
+                  },
+                  {
+                    "control_type": "select",
+                    "label": "Verb",
+                    "name": "verb",
+                    "type": "string"
+                  },
+                  {
+                    "control_type": "select",
+                    "label": "Response type",
+                    "name": "response_type",
+                    "type": "string"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Path",
+                    "name": "path",
+                    "type": "string"
+                  },
+                  {
+                    "label": "Request URL parameters",
+                    "name": "input",
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Schema",
+                        "name": "schema",
+                        "type": "string"
+                      },
+                      {
+                        "label": "Data",
+                        "name": "data",
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "Types",
+                            "name": "types",
+                            "type": "string"
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Limit",
+                            "name": "limit",
+                            "type": "string"
+                          }
+                        ],
+                        "type": "object"
+                      }
+                    ],
+                    "type": "object"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Output",
+                    "name": "output",
+                    "type": "string"
+                  }
+                ],
+                "extended_output_schema": [
+                  {
+                    "control_type": "checkbox",
+                    "label": "Ok",
+                    "name": "ok",
+                    "type": "boolean"
+                  },
+                  {
+                    "label": "Channels",
+                    "name": "channels",
+                    "of": "object",
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "ID",
+                        "name": "id",
+                        "type": "string"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Name",
+                        "name": "name",
+                        "type": "string"
+                      }
+                    ],
+                    "type": "array"
+                  }
+                ],
+                "input": {
+                  "input": {
+                    "data": {
+                      "limit": "200",
+                      "types": "public_channel,private_channel"
+                    },
+                    "schema": "[{\"control_type\": \"text\", \"label\": \"Types\", \"type\": \"string\", \"name\": \"types\"}, {\"control_type\": \"text\", \"label\": \"Limit\", \"type\": \"string\", \"name\": \"limit\"}]"
+                  },
+                  "mnemonic": "List Slack channels",
+                  "output": "[{\"name\": \"ok\", \"label\": \"Ok\", \"type\": \"boolean\", \"control_type\": \"checkbox\"}, {\"name\": \"channels\", \"label\": \"Channels\", \"type\": \"array\", \"of\": \"object\", \"properties\": [{\"name\": \"id\", \"label\": \"ID\", \"type\": \"string\", \"control_type\": \"text\"}, {\"name\": \"name\", \"label\": \"Name\", \"type\": \"string\", \"control_type\": \"text\"}]}]",
+                  "path": "conversations.list",
+                  "response_type": "json",
+                  "verb": "get"
+                },
+                "keyword": "action",
+                "name": "__adhoc_http_action",
+                "number": 5,
+                "provider": "slack_bot",
+                "uuid": "list-channels-001"
+              },
+              {
+                "as": "set_channel_id",
+                "extended_input_schema": [
+                  {
+                    "control_type": "text",
+                    "label": "channel_id",
+                    "name": "channel_id",
+                    "optional": true,
+                    "type": "string"
+                  }
+                ],
+                "input": {
+                  "channel_id": "=_dp('{\"pill_type\": \"output\", \"provider\": \"slack_bot\", \"line\": \"list_channels\", \"path\": [\"channels\"]}').where(name: 'team-welcome').first['id']",
+                  "input_mode": "raw",
+                  "name": "declare-channel-id-001:declare_channel_id:channel_id"
+                },
+                "keyword": "action",
+                "name": "update_variables",
+                "number": 6,
+                "provider": "workato_variable",
+                "uuid": "set-channel-id-001"
+              },
+              {
+                "as": "lookup_slack_user",
+                "extended_input_schema": [
+                  {
+                    "control_type": "text",
+                    "label": "Mnemonic",
+                    "name": "mnemonic",
+                    "type": "string"
+                  },
+                  {
+                    "control_type": "select",
+                    "label": "Verb",
+                    "name": "verb",
+                    "type": "string"
+                  },
+                  {
+                    "control_type": "select",
+                    "label": "Response type",
+                    "name": "response_type",
+                    "type": "string"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Path",
+                    "name": "path",
+                    "type": "string"
+                  },
+                  {
+                    "label": "Request URL parameters",
+                    "name": "input",
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Schema",
+                        "name": "schema",
+                        "type": "string"
+                      },
+                      {
+                        "label": "Data",
+                        "name": "data",
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "Email",
+                            "name": "email",
+                            "type": "string"
+                          }
+                        ],
+                        "type": "object"
+                      }
+                    ],
+                    "type": "object"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Output",
+                    "name": "output",
+                    "type": "string"
+                  }
+                ],
+                "extended_output_schema": [
+                  {
+                    "control_type": "checkbox",
+                    "label": "Ok",
+                    "name": "ok",
+                    "type": "boolean"
+                  },
+                  {
+                    "label": "User",
+                    "name": "user",
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "ID",
+                        "name": "id",
+                        "type": "string"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Name",
+                        "name": "name",
+                        "type": "string"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Team ID",
+                        "name": "team_id",
+                        "type": "string"
+                      }
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "input": {
+                  "input": {
+                    "data": {
+                      "email": "#{_dp('{\"pill_type\": \"output\", \"provider\": \"workato_api_platform\", \"line\": \"api_trigger\", \"path\": [\"request\", \"email\"]}')}"
+                    },
+                    "schema": "[{\"control_type\": \"text\", \"label\": \"Email\", \"type\": \"string\", \"name\": \"email\"}]"
+                  },
+                  "mnemonic": "Look up Slack user by email",
+                  "output": "[{\"name\": \"ok\", \"label\": \"Ok\", \"type\": \"boolean\", \"control_type\": \"checkbox\"}, {\"name\": \"user\", \"label\": \"User\", \"type\": \"object\", \"properties\": [{\"name\": \"id\", \"label\": \"ID\", \"type\": \"string\", \"control_type\": \"text\"}, {\"name\": \"name\", \"label\": \"Name\", \"type\": \"string\", \"control_type\": \"text\"}, {\"name\": \"team_id\", \"label\": \"Team ID\", \"type\": \"string\", \"control_type\": \"text\"}]}]",
+                  "path": "users.lookupByEmail",
+                  "response_type": "json",
+                  "verb": "get"
+                },
+                "keyword": "action",
+                "name": "__adhoc_http_action",
+                "number": 7,
+                "provider": "slack_bot",
+                "uuid": "lookup-slack-user-001"
+              },
+              {
+                "as": "post_goodbye_message",
+                "input": {
+                  "channel": "#{_dp('{\"pill_type\": \"output\", \"provider\": \"workato_variable\", \"line\": \"declare_channel_id\", \"path\": [\"channel_id\"]}')}",
+                  "message": {
+                    "title": "Team member departing",
+                    "attachment_text": "=' *' + _dp('{\"pill_type\": \"output\", \"provider\": \"salesforce\", \"line\": \"search_user\", \"path\": [\"User\", {\"path_element_type\": \"current_item\"}, \"Name\"]}') + '* (' + _dp('{\"pill_type\": \"output\", \"provider\": \"workato_api_platform\", \"line\": \"api_trigger\", \"path\": [\"request\", \"email\"]}') + ') is leaving the team.'"
+                  },
+                  "text": "=':wave: *' + _dp('{\"pill_type\": \"output\", \"provider\": \"salesforce\", \"line\": \"search_user\", \"path\": [\"User\", {\"path_element_type\": \"current_item\"}, \"Name\"]}') + '* (' + _dp('{\"pill_type\": \"output\", \"provider\": \"workato_api_platform\", \"line\": \"api_trigger\", \"path\": [\"request\", \"email\"]}') + ') is leaving the team. Thank you and all the best!'"
+                },
+                "keyword": "action",
+                "name": "post_bot_message",
+                "number": 8,
+                "provider": "slack_bot",
+                "uuid": "post-goodbye-message-001"
+              },
+              {
+                "as": "kick_user",
+                "extended_input_schema": [
+                  {
+                    "control_type": "text",
+                    "label": "Mnemonic",
+                    "name": "mnemonic",
+                    "type": "string"
+                  },
+                  {
+                    "control_type": "select",
+                    "label": "Verb",
+                    "name": "verb",
+                    "type": "string"
+                  },
+                  {
+                    "control_type": "select",
+                    "label": "Request type",
+                    "name": "request_type",
+                    "type": "string"
+                  },
+                  {
+                    "control_type": "select",
+                    "label": "Response type",
+                    "name": "response_type",
+                    "type": "string"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Path",
+                    "name": "path",
+                    "type": "string"
+                  },
+                  {
+                    "label": "Request URL parameters",
+                    "name": "input",
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Schema",
+                        "name": "schema",
+                        "type": "string"
+                      },
+                      {
+                        "label": "Data",
+                        "name": "data",
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "Channel",
+                            "name": "channel",
+                            "type": "string"
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "User",
+                            "name": "user",
+                            "type": "string"
+                          }
+                        ],
+                        "type": "object"
+                      }
+                    ],
+                    "type": "object"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Output",
+                    "name": "output",
+                    "type": "string"
+                  }
+                ],
+                "extended_output_schema": [
+                  {
+                    "control_type": "checkbox",
+                    "label": "Ok",
+                    "name": "ok",
+                    "type": "boolean"
+                  }
+                ],
+                "input": {
+                  "input": {
+                    "data": {
+                      "channel": "#{_dp('{\"pill_type\": \"output\", \"provider\": \"workato_variable\", \"line\": \"declare_channel_id\", \"path\": [\"channel_id\"]}')}",
+                      "user": "#{_dp('{\"pill_type\": \"output\", \"provider\": \"slack_bot\", \"line\": \"lookup_slack_user\", \"path\": [\"user\", \"id\"]}')}"
+                    },
+                    "schema": "[{\"control_type\": \"text\", \"label\": \"Channel\", \"type\": \"string\", \"name\": \"channel\"}, {\"control_type\": \"text\", \"label\": \"User\", \"type\": \"string\", \"name\": \"user\"}]"
+                  },
+                  "mnemonic": "Remove user from Slack channel",
+                  "output": "[{\"name\": \"ok\", \"label\": \"Ok\", \"type\": \"boolean\", \"control_type\": \"checkbox\"}, {\"name\": \"error\", \"label\": \"Error\", \"type\": \"string\", \"control_type\": \"text\"}]",
+                  "path": "conversations.kick",
+                  "request_type": "json",
+                  "response_type": "json",
+                  "verb": "post"
+                },
+                "keyword": "action",
+                "name": "__adhoc_http_action",
+                "number": 9,
+                "provider": "slack_bot",
+                "uuid": "kick-user-001"
+              },
+              {
+                "as": "deactivate_sf_user",
+                "dynamicPickListSelection": {
+                  "sobject_name": "User"
+                },
+                "extended_input_schema": [
+                  {
+                    "control_type": "checkbox",
+                    "label": "Active",
+                    "name": "IsActive",
+                    "type": "boolean",
+                    "custom": false,
+                    "optional": true,
+                    "sfdc_createable": true,
+                    "sfdc_updateable": true
+                  }
+                ],
+                "input": {
+                  "sobject_name": "User",
+                  "id": "#{_dp('{\"pill_type\": \"output\", \"provider\": \"salesforce\", \"line\": \"search_user\", \"path\": [\"User\", {\"path_element_type\": \"current_item\"}, \"Id\"]}')}",
+                  "IsActive": "false"
+                },
+                "keyword": "action",
+                "name": "update_sobject",
+                "number": 10,
+                "provider": "salesforce",
+                "uuid": "deactivate-sf-user-001"
+              },
+              {
+                "as": "deactivate_slack_account",
+                "extended_input_schema": [
+                  {
+                    "control_type": "text",
+                    "label": "Mnemonic",
+                    "name": "mnemonic",
+                    "type": "string"
+                  },
+                  {
+                    "control_type": "select",
+                    "label": "Verb",
+                    "name": "verb",
+                    "type": "string"
+                  },
+                  {
+                    "control_type": "select",
+                    "label": "Request type",
+                    "name": "request_type",
+                    "type": "string"
+                  },
+                  {
+                    "control_type": "select",
+                    "label": "Response type",
+                    "name": "response_type",
+                    "type": "string"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Path",
+                    "name": "path",
+                    "type": "string"
+                  },
+                  {
+                    "label": "Request URL parameters",
+                    "name": "input",
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Schema",
+                        "name": "schema",
+                        "type": "string"
+                      },
+                      {
+                        "label": "Data",
+                        "name": "data",
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "Team_Id",
+                            "name": "team_id",
+                            "type": "string"
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "User_Id",
+                            "name": "user_id",
+                            "type": "string"
+                          }
+                        ],
+                        "type": "object"
+                      }
+                    ],
+                    "type": "object"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Output",
+                    "name": "output",
+                    "type": "string"
+                  }
+                ],
+                "extended_output_schema": [
+                  {
+                    "control_type": "checkbox",
+                    "label": "Ok",
+                    "name": "ok",
+                    "type": "boolean"
+                  }
+                ],
+                "input": {
+                  "input": {
+                    "data": {
+                      "team_id": "#{_dp('{\"pill_type\": \"output\", \"provider\": \"slack_bot\", \"line\": \"lookup_slack_user\", \"path\": [\"user\", \"team_id\"]}')}",
+                      "user_id": "#{_dp('{\"pill_type\": \"output\", \"provider\": \"slack_bot\", \"line\": \"lookup_slack_user\", \"path\": [\"user\", \"id\"]}')}"
+                    },
+                    "schema": "[{\"control_type\": \"text\", \"label\": \"Team_Id\", \"type\": \"string\", \"name\": \"team_id\"}, {\"control_type\": \"text\", \"label\": \"User_Id\", \"type\": \"string\", \"name\": \"user_id\"}]"
+                  },
+                  "mnemonic": "Deactivate Slack account (admin)",
+                  "output": "[{\"name\": \"ok\", \"label\": \"Ok\", \"type\": \"boolean\", \"control_type\": \"checkbox\"}, {\"name\": \"error\", \"label\": \"Error\", \"type\": \"string\", \"control_type\": \"text\"}]",
+                  "path": "admin.users.remove",
+                  "request_type": "json",
+                  "response_type": "json",
+                  "verb": "post"
+                },
+                "keyword": "action",
+                "name": "__adhoc_http_action",
+                "number": 11,
+                "provider": "slack_bot",
+                "uuid": "deactivate-slack-account-001"
+              },
+              {
+                "as": "return_success",
+                "extended_input_schema": [
+                  {
+                    "change_on_blur": true,
+                    "control_type": "select",
+                    "extends_schema": true,
+                    "label": "Response",
+                    "name": "http_status_code",
+                    "pick_list": [
+                      [
+                        "Success",
+                        "200"
+                      ],
+                      [
+                        "Not Found",
+                        "404"
+                      ],
+                      [
+                        "Server Error",
+                        "500"
+                      ]
+                    ],
+                    "type": "string"
+                  },
+                  {
+                    "label": "Response body",
+                    "name": "response",
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Message",
+                        "name": "message",
+                        "type": "string"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Salesforce User ID",
+                        "name": "salesforce_user_id",
+                        "type": "string"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Slack User ID",
+                        "name": "slack_user_id",
+                        "type": "string"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Slack Channel ID",
+                        "name": "slack_channel_id",
+                        "type": "string"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Slack Account Deactivated",
+                        "name": "slack_account_deactivated",
+                        "type": "string"
+                      }
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "input": {
+                  "http_status_code": "200",
+                  "response": {
+                    "message": "=' Offboarded ' + _dp('{\"pill_type\": \"output\", \"provider\": \"salesforce\", \"line\": \"search_user\", \"path\": [\"User\", {\"path_element_type\": \"current_item\"}, \"Name\"]}') + ': removed from #team-welcome, goodbye message posted, Salesforce user deactivated.'",
+                    "salesforce_user_id": "#{_dp('{\"pill_type\": \"output\", \"provider\": \"salesforce\", \"line\": \"search_user\", \"path\": [\"User\", {\"path_element_type\": \"current_item\"}, \"Id\"]}')}",
+                    "slack_channel_id": "#{_dp('{\"pill_type\": \"output\", \"provider\": \"workato_variable\", \"line\": \"declare_channel_id\", \"path\": [\"channel_id\"]}')}",
+                    "slack_user_id": "#{_dp('{\"pill_type\": \"output\", \"provider\": \"slack_bot\", \"line\": \"lookup_slack_user\", \"path\": [\"user\", \"id\"]}')}",
+                    "slack_account_deactivated": "=(_dp('{\"pill_type\": \"output\", \"provider\": \"slack_bot\", \"line\": \"deactivate_slack_account\", \"path\": [\"ok\"]}')).to_s"
+                  }
+                },
+                "keyword": "action",
+                "name": "return_response",
+                "number": 12,
+                "provider": "workato_api_platform",
+                "uuid": "return-success-001"
+              },
+              {
+                "as": "else_user_not_found",
+                "block": [
+                  {
+                    "as": "return_not_found",
+                    "extended_input_schema": [
+                      {
+                        "change_on_blur": true,
+                        "control_type": "select",
+                        "extends_schema": true,
+                        "label": "Response",
+                        "name": "http_status_code",
+                        "pick_list": [
+                          [
+                            "Success",
+                            "200"
+                          ],
+                          [
+                            "Not Found",
+                            "404"
+                          ],
+                          [
+                            "Server Error",
+                            "500"
+                          ]
+                        ],
+                        "type": "string"
+                      },
+                      {
+                        "label": "Response body",
+                        "name": "response",
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "Message",
+                            "name": "message",
+                            "type": "string"
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Salesforce User ID",
+                            "name": "salesforce_user_id",
+                            "type": "string"
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Slack User ID",
+                            "name": "slack_user_id",
+                            "type": "string"
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Slack Channel ID",
+                            "name": "slack_channel_id",
+                            "type": "string"
+                          },
+                          {
+                            "control_type": "text",
+                            "label": "Slack Account Deactivated",
+                            "name": "slack_account_deactivated",
+                            "type": "string"
+                          }
+                        ],
+                        "type": "object"
+                      }
+                    ],
+                    "input": {
+                      "http_status_code": "404",
+                      "response": {
+                        "message": "=' No Salesforce User found for email ' + _dp('{\"pill_type\": \"output\", \"provider\": \"workato_api_platform\", \"line\": \"api_trigger\", \"path\": [\"request\", \"email\"]}')",
+                        "salesforce_user_id": "=null",
+                        "slack_channel_id": "=null",
+                        "slack_user_id": "=null",
+                        "slack_account_deactivated": "=null"
+                      }
+                    },
+                    "keyword": "action",
+                    "name": "return_response",
+                    "number": 14,
+                    "provider": "workato_api_platform",
+                    "uuid": "return-not-found-001"
+                  }
+                ],
+                "input": {},
+                "keyword": "else",
+                "number": 13,
+                "uuid": "else-user-not-found-001"
+              }
+            ],
+            "input": {
+              "conditions": [
+                {
+                  "lhs": "#{_dp('{\"pill_type\": \"output\", \"provider\": \"salesforce\", \"line\": \"search_user\", \"path\": [\"User\", {\"path_element_type\": \"current_item\"}, \"Id\"]}')}",
+                  "operand": "present",
+                  "uuid": "cond-user-found"
+                }
+              ],
+              "operand": "and",
+              "type": "compound"
+            },
+            "keyword": "if",
+            "number": 3,
+            "uuid": "if-user-found-001"
+          }
+        ],
+        "input": {},
+        "keyword": "try",
+        "number": 1,
+        "uuid": "try-main-001"
+      },
+      {
+        "as": "catch_global_error",
+        "block": [
+          {
+            "as": "return_server_error",
+            "extended_input_schema": [
+              {
+                "change_on_blur": true,
+                "control_type": "select",
+                "extends_schema": true,
+                "label": "Response",
+                "name": "http_status_code",
+                "pick_list": [
+                  [
+                    "Success",
+                    "200"
+                  ],
+                  [
+                    "Not Found",
+                    "404"
+                  ],
+                  [
+                    "Server Error",
+                    "500"
+                  ]
+                ],
+                "type": "string"
+              },
+              {
+                "label": "Response body",
+                "name": "response",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "Message",
+                    "name": "message",
+                    "type": "string"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Salesforce User ID",
+                    "name": "salesforce_user_id",
+                    "type": "string"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Slack User ID",
+                    "name": "slack_user_id",
+                    "type": "string"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Slack Channel ID",
+                    "name": "slack_channel_id",
+                    "type": "string"
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "Slack Account Deactivated",
+                    "name": "slack_account_deactivated",
+                    "type": "string"
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "input": {
+              "http_status_code": "500",
+              "response": {
+                "message": "='Unexpected error offboarding employee: ' + _dp('{\"pill_type\": \"output\", \"provider\": \"catch\", \"line\": \"catch_global_error\", \"path\": [\"message\"]}')",
+                "salesforce_user_id": "=null",
+                "slack_channel_id": "=null",
+                "slack_user_id": "=null",
+                "slack_account_deactivated": "=null"
+              }
+            },
+            "keyword": "action",
+            "name": "return_response",
+            "number": 16,
+            "provider": "workato_api_platform",
+            "uuid": "return-server-error-001"
+          }
+        ],
+        "input": {
+          "max_retry_count": "0",
+          "retry_interval": "2"
+        },
+        "keyword": "catch",
+        "number": 15,
+        "provider": null,
+        "uuid": "catch-global-error-001"
+      }
+    ],
+    "extended_output_schema": [
+      {
+        "label": "Request",
+        "name": "request",
+        "properties": [
+          {
+            "control_type": "text",
+            "label": "Email",
+            "name": "email",
+            "type": "string"
+          }
+        ],
+        "type": "object"
+      }
+    ],
+    "input": {
+      "request": {
+        "content_type": "json",
+        "schema": "[{\"name\": \"email\", \"label\": \"Email\", \"type\": \"string\", \"control_type\": \"text\", \"optional\": false, \"hint\": \"Departing employee's email address\"}]"
+      },
+      "response": {
+        "content_type": "json",
+        "responses": [
+          {
+            "http_status_code": "200",
+            "name": "Success"
+          },
+          {
+            "http_status_code": "404",
+            "name": "Not Found"
+          },
+          {
+            "http_status_code": "500",
+            "name": "Server Error"
+          }
+        ]
+      }
+    },
+    "keyword": "trigger",
+    "name": "receive_request",
+    "number": 0,
+    "provider": "workato_api_platform",
+    "uuid": "offboard-trigger-001"
+  },
+  "concurrency": 1,
+  "config": [
+    {
+      "account_id": null,
+      "keyword": "application",
+      "provider": "workato_api_platform",
+      "skip_validation": false
+    },
+    {
+      "account_id": null,
+      "keyword": "application",
+      "provider": "workato_variable",
+      "skip_validation": false
+    },
+    {
+      "account_id": {
+        "folder": "🔌 Connections",
+        "name": "Demo Salesforce account",
+        "zip_name": "🔌 Connections/demo_salesforce_account.connection.json"
+      },
+      "keyword": "application",
+      "provider": "salesforce",
+      "skip_validation": false
+    },
+    {
+      "account_id": {
+        "folder": "🔌 Connections",
+        "name": "Slack My Demo-Bot",
+        "zip_name": "🔌 Connections/slack_my_demo_bot.connection.json"
+      },
+      "keyword": "application",
+      "provider": "slack_bot",
+      "skip_validation": false
+    }
+  ],
+  "name": "Offboard Employee",
+  "private": true,
+  "version": 1
+}

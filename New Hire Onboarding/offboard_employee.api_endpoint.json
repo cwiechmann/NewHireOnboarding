@@ -1,0 +1,17 @@
+{
+  "api_group_id": {
+    "folder": "",
+    "name": "Employee Lifecycle",
+    "zip_name": "employee_lifecycle.api_group.json"
+  },
+  "legacy": false,
+  "method": "POST",
+  "name": "offboard_employee",
+  "path": "offboard_employee",
+  "recipe_id": {
+    "folder": "",
+    "name": "Offboard Employee",
+    "zip_name": "offboard_employee.recipe.json"
+  },
+  "validate_request": false
+}
