@@ -816,104 +816,104 @@
             "keyword": "if",
             "number": 3,
             "uuid": "if-user-found-001"
+          },
+          {
+            "as": "catch_global_error",
+            "block": [
+              {
+                "as": "return_server_error",
+                "extended_input_schema": [
+                  {
+                    "change_on_blur": true,
+                    "control_type": "select",
+                    "extends_schema": true,
+                    "label": "Response",
+                    "name": "http_status_code",
+                    "pick_list": [
+                      [
+                        "Success",
+                        "200"
+                      ],
+                      [
+                        "Not Found",
+                        "404"
+                      ],
+                      [
+                        "Server Error",
+                        "500"
+                      ]
+                    ],
+                    "type": "string"
+                  },
+                  {
+                    "label": "Response body",
+                    "name": "response",
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "Message",
+                        "name": "message",
+                        "type": "string"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Salesforce User ID",
+                        "name": "salesforce_user_id",
+                        "type": "string"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Slack User ID",
+                        "name": "slack_user_id",
+                        "type": "string"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Slack Channel ID",
+                        "name": "slack_channel_id",
+                        "type": "string"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Slack Account Deactivated",
+                        "name": "slack_account_deactivated",
+                        "type": "string"
+                      }
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "input": {
+                  "http_status_code": "500",
+                  "response": {
+                    "message": "='Unexpected error offboarding employee: ' + _dp('{\"pill_type\": \"output\", \"provider\": \"catch\", \"line\": \"catch_global_error\", \"path\": [\"message\"]}')",
+                    "salesforce_user_id": "=null",
+                    "slack_channel_id": "=null",
+                    "slack_user_id": "=null",
+                    "slack_account_deactivated": "=null"
+                  }
+                },
+                "keyword": "action",
+                "name": "return_response",
+                "number": 16,
+                "provider": "workato_api_platform",
+                "uuid": "return-server-error-001"
+              }
+            ],
+            "input": {
+              "max_retry_count": "0",
+              "retry_interval": "2"
+            },
+            "keyword": "catch",
+            "number": 15,
+            "provider": null,
+            "uuid": "catch-global-error-001"
           }
         ],
         "input": {},
         "keyword": "try",
         "number": 1,
         "uuid": "try-main-001"
-      },
-      {
-        "as": "catch_global_error",
-        "block": [
-          {
-            "as": "return_server_error",
-            "extended_input_schema": [
-              {
-                "change_on_blur": true,
-                "control_type": "select",
-                "extends_schema": true,
-                "label": "Response",
-                "name": "http_status_code",
-                "pick_list": [
-                  [
-                    "Success",
-                    "200"
-                  ],
-                  [
-                    "Not Found",
-                    "404"
-                  ],
-                  [
-                    "Server Error",
-                    "500"
-                  ]
-                ],
-                "type": "string"
-              },
-              {
-                "label": "Response body",
-                "name": "response",
-                "properties": [
-                  {
-                    "control_type": "text",
-                    "label": "Message",
-                    "name": "message",
-                    "type": "string"
-                  },
-                  {
-                    "control_type": "text",
-                    "label": "Salesforce User ID",
-                    "name": "salesforce_user_id",
-                    "type": "string"
-                  },
-                  {
-                    "control_type": "text",
-                    "label": "Slack User ID",
-                    "name": "slack_user_id",
-                    "type": "string"
-                  },
-                  {
-                    "control_type": "text",
-                    "label": "Slack Channel ID",
-                    "name": "slack_channel_id",
-                    "type": "string"
-                  },
-                  {
-                    "control_type": "text",
-                    "label": "Slack Account Deactivated",
-                    "name": "slack_account_deactivated",
-                    "type": "string"
-                  }
-                ],
-                "type": "object"
-              }
-            ],
-            "input": {
-              "http_status_code": "500",
-              "response": {
-                "message": "='Unexpected error offboarding employee: ' + _dp('{\"pill_type\": \"output\", \"provider\": \"catch\", \"line\": \"catch_global_error\", \"path\": [\"message\"]}')",
-                "salesforce_user_id": "=null",
-                "slack_channel_id": "=null",
-                "slack_user_id": "=null",
-                "slack_account_deactivated": "=null"
-              }
-            },
-            "keyword": "action",
-            "name": "return_response",
-            "number": 16,
-            "provider": "workato_api_platform",
-            "uuid": "return-server-error-001"
-          }
-        ],
-        "input": {
-          "max_retry_count": "0",
-          "retry_interval": "2"
-        },
-        "keyword": "catch",
-        "number": 15,
-        "provider": null,
-        "uuid": "catch-global-error-001"
       }
     ],
     "extended_output_schema": [
